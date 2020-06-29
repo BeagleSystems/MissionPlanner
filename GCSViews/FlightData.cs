@@ -909,7 +909,7 @@ namespace MissionPlanner.GCSViews
             }
         }
 
-        private void BUT_ARM_Click(object sender, EventArgs e)
+        public void BUT_ARM_Click(object sender, EventArgs e)
         {
             if (!MainV2.comPort.BaseStream.IsOpen)
                 return;
@@ -1270,7 +1270,7 @@ namespace MissionPlanner.GCSViews
             }
         }
 
-        private void BUT_quickauto_Click(object sender, EventArgs e)
+        public void BUT_quickauto_Click(object sender, EventArgs e)
         {
             try
             {

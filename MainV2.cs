@@ -1438,7 +1438,73 @@ namespace MissionPlanner
             this.MenuConnect.Image = global::MissionPlanner.Properties.Resources.light_connect_icon;
         }
 
-        public void doConnect(MAVLinkInterface comPort, string portname, string baud, bool getparams = true)
+        private static bool param_loaded = false;
+
+        public void getParamsOnlyAtFirstRun()
+        {
+            // If comport is not opened or parameters is already loaded
+            if ((!comPort.BaseStream.IsOpen) || (param_loaded == true))
+            {
+                return;
+            }
+
+            var ftpfile = false;
+            if ((MainV2.comPort.MAV.cs.capabilities & (int)MAVLink.MAV_PROTOCOL_CAPABILITY.FTP) > 0)
+            {
+                var prd = new ProgressReporterDialogue();
+                prd.DoWork += (IProgressReporterDialogue sender) =>
+                {
+                    sender.UpdateProgressAndStatus(-1, "Checking for Param MAVFTP");
+                    var cancel = new CancellationTokenSource();
+                    var paramfileTask = Task.Run<MemoryStream>(() =>
+                    {
+                        return new MAVFtp(comPort, comPort.MAV.sysid, comPort.MAV.compid).GetFile(
+                            "@PARAM/param.pck", cancel, false, 110);
+                    });
+                    while (!paramfileTask.IsCompleted)
+                    {
+                        if (sender.doWorkArgs.CancelRequested)
+                        {
+                            cancel.Cancel();
+                            sender.doWorkArgs.CancelAcknowledged = true;
+                        }
+                    }
+
+                    var paramfile = paramfileTask.Result;
+                    if (paramfile != null && paramfile.Length > 0)
+                    {
+                        var mavlist = parampck.unpack(paramfile.GetBuffer());
+                        if (mavlist != null)
+                        {
+                            comPort.MAVlist[comPort.MAV.sysid, comPort.MAV.compid].param.Clear();
+                            comPort.MAVlist[comPort.MAV.sysid, comPort.MAV.compid].param.TotalReported =
+                                mavlist.Count;
+                            comPort.MAVlist[comPort.MAV.sysid, comPort.MAV.compid].param.AddRange(mavlist);
+                            mavlist.ForEach(a =>
+                                comPort.MAVlist[comPort.MAV.sysid, comPort.MAV.compid].param_types[a.Name] =
+                                    a.Type);
+                            ftpfile = true;
+                        }
+                    }
+                };
+
+                prd.RunBackgroundOperationAsync();
+            }
+
+            if (!ftpfile)
+            {
+                if (Settings.Instance.GetBoolean("Params_BG", false))
+                    Task.Run(() => { comPort.getParamList(comPort.MAV.sysid, comPort.MAV.compid); });
+                else
+                {
+                    comPort.getParamList();
+                }
+            }
+
+            param_loaded = true;
+        }
+
+        public void doConnect(MAVLinkInterface comPort, string portname, string baud, bool getparams = true, bool checkupdate = false)
         {
             bool skipconnectcheck = false;
             log.Info("We are connecting to " + portname + " " + baud);
@@ -1606,6 +1672,8 @@ namespace MissionPlanner
 
                 if (getparams)
                 {
+                    getParamsOnlyAtFirstRun();
+#if false
                     var ftpfile = false;
                     if ((MainV2.comPort.MAV.cs.capabilities & (int) MAVLink.MAV_PROTOCOL_CAPABILITY.FTP) > 0)
                     {
@@ -1654,47 +1722,55 @@ namespace MissionPlanner
                         if (Settings.Instance.GetBoolean("Params_BG", false))
                             Task.Run(() => { comPort.getParamList(comPort.MAV.sysid, comPort.MAV.compid); });
                         else
-                            comPort.getParamList();
-                    }
-                }
-
-                _connectionControl.UpdateSysIDS();             
-
-                // check for newer firmware
-                var softwares = Firmware.LoadSoftwares();
-
-                if (softwares.Count > 0)
-                {
-                    try
-                    {
-                        string[] fields1 = comPort.MAV.VersionString.Split(' ');
-
-                        foreach (Firmware.software item in softwares)
                         {
-                            string[] fields2 = item.name.Split(' ');
-
-                            // check primare firmware type. ie arudplane, arducopter
-                            if (fields1[0] == fields2[0])
-                            {
-                                Version ver1 = VersionDetection.GetVersion(comPort.MAV.VersionString);
-                                Version ver2 = VersionDetection.GetVersion(item.name);
-
-                                if (ver2 > ver1)
-                                {
-                                    Common.MessageShowAgain(Strings.NewFirmware + "-" + item.name,
-                                        Strings.NewFirmwareA + item.name + Strings.Pleaseup +
-                                        "[link;https://discuss.ardupilot.org/tags/stable-release;Release Notes]");
-                                    break;
-                                }
-
-                                // check the first hit only
-                                break;
-                            }
+                            comPort.getParamList();
                         }
                     }
-                    catch (Exception ex)
+
+#endif
+                }
+
+                _connectionControl.UpdateSysIDS();
+
+                // Add auto check update flag (matthew)
+                if (checkupdate)
+                {
+                    // check for newer firmware
+                    var softwares = Firmware.LoadSoftwares();
+
+                    if (softwares.Count > 0)
                     {
-                        log.Error(ex);
+                        try
+                        {
+                            string[] fields1 = comPort.MAV.VersionString.Split(' ');
+
+                            foreach (Firmware.software item in softwares)
+                            {
+                                string[] fields2 = item.name.Split(' ');
+
+                                // check primare firmware type. ie arudplane, arducopter
+                                if (fields1[0] == fields2[0])
+                                {
+                                    Version ver1 = VersionDetection.GetVersion(comPort.MAV.VersionString);
+                                    Version ver2 = VersionDetection.GetVersion(item.name);
+
+                                    if (ver2 > ver1)
+                                    {
+                                        Common.MessageShowAgain(Strings.NewFirmware + "-" + item.name,
+                                            Strings.NewFirmwareA + item.name + Strings.Pleaseup +
+                                            "[link;https://discuss.ardupilot.org/tags/stable-release;Release Notes]");
+                                        break;
+                                    }
+
+                                    // check the first hit only
+                                    break;
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            log.Error(ex);
+                        }
                     }
                 }
 

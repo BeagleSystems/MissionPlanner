@@ -7275,5 +7275,21 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
             if (MainMap.Zoom < 17)
                 MainMap.Zoom = 17;
         }
+
+        private void BUT_Load_WP_to_Auto_Click(object sender, EventArgs e)
+        {
+            // Read WP from pixhawk
+            this.BUT_read_Click(sender, e);
+
+            // Read WP from selected file
+            this.BUT_loadwpfile_Click(sender, e);
+
+            // Write WP file
+            this.BUT_write_Click(sender, e);
+
+            // set AUTO mode and ARM
+            MainV2.instance.FlightData.BUT_quickauto_Click(sender, e);
+            MainV2.instance.FlightData.BUT_ARM_Click(sender, e);
+        }
     }
 }
