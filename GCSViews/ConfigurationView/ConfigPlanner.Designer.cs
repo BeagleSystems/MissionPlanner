@@ -105,6 +105,7 @@
             this.num_gcsid = new System.Windows.Forms.NumericUpDown();
             this.label7 = new System.Windows.Forms.Label();
             this.CHK_params_bg = new System.Windows.Forms.CheckBox();
+            this.CHT_RT_ALT = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.NUM_tracklength)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.num_gcsid)).BeginInit();
             this.SuspendLayout();
@@ -729,9 +730,17 @@
             this.CHK_params_bg.UseVisualStyleBackColor = true;
             this.CHK_params_bg.CheckedChanged += new System.EventHandler(this.CHK_params_bg_CheckedChanged);
             // 
+            // CHT_RT_ALT
+            // 
+            resources.ApplyResources(this.CHT_RT_ALT, "CHT_RT_ALT");
+            this.CHT_RT_ALT.Name = "CHT_RT_ALT";
+            this.CHT_RT_ALT.UseVisualStyleBackColor = true;
+            this.CHT_RT_ALT.CheckedChanged += new System.EventHandler(this.CHT_RT_ALT_CheckedChanged);
+            // 
             // ConfigPlanner
             // 
             resources.ApplyResources(this, "$this");
+            this.Controls.Add(this.CHT_RT_ALT);
             this.Controls.Add(this.CHK_params_bg);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.num_gcsid);
@@ -895,5 +904,6 @@
         private System.Windows.Forms.NumericUpDown num_gcsid;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.CheckBox CHK_params_bg;
+        private System.Windows.Forms.CheckBox CHT_RT_ALT;
     }
 }

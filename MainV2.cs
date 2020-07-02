@@ -2576,6 +2576,8 @@ namespace MissionPlanner
 
             DateTime speechlowspeedtime = DateTime.Now;
 
+            DateTime speechalttime = DateTime.Now;
+
             DateTime linkqualitytime = DateTime.Now;
 
             while (serialThread)
@@ -2682,6 +2684,20 @@ namespace MissionPlanner
                             {
                                 speechlowspeedtime = DateTime.Now;
                             }
+                        }
+                    }
+
+                    // speech for read out realtime altitude, 1s interval
+                    if (speechEnable && speechEngine != null && (DateTime.Now - speechalttime).TotalSeconds > 1 &&
+                        (MainV2.comPort.logreadmode || comPort.BaseStream.IsOpen))
+                    {
+                        if (MainV2.speechEngine.IsReady)
+                        {
+                            if (Settings.Instance.GetBoolean("speechaltenabled"))
+                            {
+                                MainV2.speechEngine.SpeakAsync(ArduPilot.Common.speechConversion(comPort.MAV, "" + Settings.Instance["speechalt"]));
+                            }
+                            speechalttime = DateTime.Now;
                         }
                     }
 

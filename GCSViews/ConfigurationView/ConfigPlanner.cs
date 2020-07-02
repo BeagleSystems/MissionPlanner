@@ -968,5 +968,23 @@ namespace MissionPlanner.GCSViews.ConfigurationView
         {
             Settings.Instance["Params_BG"] = CHK_params_bg.Checked.ToString();
         }
+
+        private void CHT_RT_ALT_CheckedChanged(object sender, EventArgs e)
+        {
+            if (startup)
+                return;
+            Settings.Instance["speechaltenabled"] = ((CheckBox)sender).Checked.ToString();
+
+            if (((CheckBox)sender).Checked)
+            {
+                var speechstring = "{alt}  {altunit} ";
+                if (Settings.Instance["speechalt"] != null)
+                    speechstring = Settings.Instance["speechalt"].ToString();
+                if (DialogResult.Cancel ==
+                    InputBox.Show("Notification", "What do you want it to say?", ref speechstring))
+                    return;
+                Settings.Instance["speechalt"] = speechstring;
+            }
+        }
     }
 }
