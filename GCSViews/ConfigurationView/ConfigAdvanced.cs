@@ -64,10 +64,7 @@ namespace MissionPlanner.GCSViews.ConfigurationView
                 ParameterMetaDataParser.GetParameterInformation(
                     ConfigurationManager.AppSettings["ParameterLocationsBleeding"] + ";" +
                     ConfigurationManager.AppSettings["ParameterLocations"] + ";"
-                    + "https://raw.githubusercontent.com/ArduPilot/ardupilot/Copter-3.6/ArduCopter/Parameters.cpp;" +
-                    "https://raw.githubusercontent.com/ArduPilot/ardupilot/Copter-3.5/ArduCopter/Parameters.cpp;" +
-                    "https://raw.githubusercontent.com/ArduPilot/ardupilot/plane3.9/ArduCopter/Parameters.cpp;" +
-                    "https://raw.githubusercontent.com/ArduPilot/ardupilot/plane3.8/ArduCopter/Parameters.cpp;");
+                    + "https://raw.githubusercontent.com/BeagleSystems/ardupilot/master/ArduPlane/Parameters.cpp;");
 
                 ParameterMetaDataRepositoryAPM.Reload();
             };

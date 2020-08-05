@@ -41,6 +41,7 @@
             this.quickView2 = new MissionPlanner.Controls.QuickView();
             this.quickView1 = new MissionPlanner.Controls.QuickView();
             this.tabActions = new System.Windows.Forms.TabPage();
+            this.BUT_smartRTL = new MissionPlanner.Controls.MyButton();
             this.modifyandSetLoiterRad = new MissionPlanner.Controls.ModifyandSet();
             this.BUT_abortland = new MissionPlanner.Controls.MyButton();
             this.BUT_resumemis = new MissionPlanner.Controls.MyButton();
@@ -187,7 +188,6 @@
             this.scriptChecker = new System.Windows.Forms.Timer(this.components);
             this.Messagetabtimer = new System.Windows.Forms.Timer(this.components);
             this.bindingSourceStatusTab = new System.Windows.Forms.BindingSource(this.components);
-            this.BUT_smartRTL = new MissionPlanner.Controls.MyButton();
             ((System.ComponentModel.ISupportInitialize)(this.MainH)).BeginInit();
             this.MainH.Panel1.SuspendLayout();
             this.MainH.Panel2.SuspendLayout();
@@ -648,6 +648,17 @@
             resources.ApplyResources(this.tabActions, "tabActions");
             this.tabActions.Name = "tabActions";
             this.tabActions.UseVisualStyleBackColor = true;
+            // 
+            // BUT_smartRTL
+            // 
+            this.BUT_smartRTL.ColorMouseDown = System.Drawing.Color.Empty;
+            this.BUT_smartRTL.ColorMouseOver = System.Drawing.Color.Empty;
+            this.BUT_smartRTL.ColorNotEnabled = System.Drawing.Color.Empty;
+            resources.ApplyResources(this.BUT_smartRTL, "BUT_smartRTL");
+            this.BUT_smartRTL.Name = "BUT_smartRTL";
+            this.toolTip1.SetToolTip(this.BUT_smartRTL, resources.GetString("BUT_smartRTL.ToolTip"));
+            this.BUT_smartRTL.UseVisualStyleBackColor = true;
+            this.BUT_smartRTL.Click += new System.EventHandler(this.BUT_smartRTL_Click);
             // 
             // modifyandSetLoiterRad
             // 
@@ -2194,7 +2205,7 @@
             this.windDir1.BackColor = System.Drawing.Color.Transparent;
             this.windDir1.DataBindings.Add(new System.Windows.Forms.Binding("Direction", this.bindingSource1, "wind_dir", true, System.Windows.Forms.DataSourceUpdateMode.Never));
             this.windDir1.DataBindings.Add(new System.Windows.Forms.Binding("Speed", this.bindingSource1, "wind_vel", true, System.Windows.Forms.DataSourceUpdateMode.Never));
-            this.windDir1.Direction = 360D;
+            this.windDir1.Direction = 180D;
             resources.ApplyResources(this.windDir1, "windDir1");
             this.windDir1.Name = "windDir1";
             this.windDir1.Speed = 0D;
@@ -2393,17 +2404,6 @@
             // bindingSourceStatusTab
             // 
             this.bindingSourceStatusTab.DataSource = typeof(MissionPlanner.CurrentState);
-            // 
-            // BUT_smartRTL
-            // 
-            this.BUT_smartRTL.ColorMouseDown = System.Drawing.Color.Empty;
-            this.BUT_smartRTL.ColorMouseOver = System.Drawing.Color.Empty;
-            this.BUT_smartRTL.ColorNotEnabled = System.Drawing.Color.Empty;
-            resources.ApplyResources(this.BUT_smartRTL, "BUT_smartRTL");
-            this.BUT_smartRTL.Name = "BUT_smartRTL";
-            this.toolTip1.SetToolTip(this.BUT_smartRTL, resources.GetString("BUT_smartRTL.ToolTip"));
-            this.BUT_smartRTL.UseVisualStyleBackColor = true;
-            this.BUT_smartRTL.Click += new System.EventHandler(this.BUT_smartRTL_Click);
             // 
             // FlightData
             // 

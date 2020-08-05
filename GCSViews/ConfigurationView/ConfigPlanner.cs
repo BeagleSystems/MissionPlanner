@@ -110,6 +110,7 @@ namespace MissionPlanner.GCSViews.ConfigurationView
             SetCheckboxFromConfig("speechwaypointenabled", CHK_speechwaypoint);
             SetCheckboxFromConfig("speechmodeenabled", CHK_speechmode);
             SetCheckboxFromConfig("speechcustomenabled", CHK_speechcustom);
+            SetCheckboxFromConfig("speechcustomenabled", CHT_RT_ALT);
             SetCheckboxFromConfig("speechbatteryenabled", CHK_speechbattery);
             SetCheckboxFromConfig("speechaltenabled", CHK_speechaltwarning);
             SetCheckboxFromConfig("speecharmenabled", CHK_speecharmdisarm);
