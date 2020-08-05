@@ -4790,6 +4790,7 @@ Maps the change of airspeed error to the acceleration setpoint</short_desc>
         <value code="6">RETURN TO LAUNCH</value>
         <value code="9">STABILIZED</value>
         <value code="8">OFFBOARD</value>
+        <value code="24">SMART RTL</value>
       </values>
     </parameter>
     <parameter default="0" name="COM_FLTMODE2" type="INT32">
@@ -4809,6 +4810,7 @@ Maps the change of airspeed error to the acceleration setpoint</short_desc>
         <value code="6">RETURN TO LAUNCH</value>
         <value code="9">STABILIZED</value>
         <value code="8">OFFBOARD</value>
+        <value code="24">SMART RTL</value>
       </values>
     </parameter>
     <parameter default="0" name="COM_FLTMODE3" type="INT32">
@@ -4828,6 +4830,7 @@ Maps the change of airspeed error to the acceleration setpoint</short_desc>
         <value code="6">RETURN TO LAUNCH</value>
         <value code="9">STABILIZED</value>
         <value code="8">OFFBOARD</value>
+        <value code="24">SMART RTL</value>
       </values>
     </parameter>
     <parameter default="0" name="COM_FLTMODE4" type="INT32">
@@ -4847,6 +4850,7 @@ Maps the change of airspeed error to the acceleration setpoint</short_desc>
         <value code="6">RETURN TO LAUNCH</value>
         <value code="9">STABILIZED</value>
         <value code="8">OFFBOARD</value>
+        <value code="24">SMART RTL</value>
       </values>
     </parameter>
     <parameter default="0" name="COM_FLTMODE5" type="INT32">
@@ -4866,6 +4870,7 @@ Maps the change of airspeed error to the acceleration setpoint</short_desc>
         <value code="6">RETURN TO LAUNCH</value>
         <value code="9">STABILIZED</value>
         <value code="8">OFFBOARD</value>
+        <value code="24">SMART RTL</value>
       </values>
     </parameter>
     <parameter default="0" name="COM_FLTMODE6" type="INT32">
@@ -4885,6 +4890,7 @@ Maps the change of airspeed error to the acceleration setpoint</short_desc>
         <value code="6">RETURN TO LAUNCH</value>
         <value code="9">STABILIZED</value>
         <value code="8">OFFBOARD</value>
+        <value code="24">SMART RTL</value>
       </values>
     </parameter>
     <parameter default="-1.0" name="TEST_MIN" type="FLOAT">

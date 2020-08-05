@@ -187,6 +187,7 @@
             this.scriptChecker = new System.Windows.Forms.Timer(this.components);
             this.Messagetabtimer = new System.Windows.Forms.Timer(this.components);
             this.bindingSourceStatusTab = new System.Windows.Forms.BindingSource(this.components);
+            this.BUT_smartRTL = new MissionPlanner.Controls.MyButton();
             ((System.ComponentModel.ISupportInitialize)(this.MainH)).BeginInit();
             this.MainH.Panel1.SuspendLayout();
             this.MainH.Panel2.SuspendLayout();
@@ -621,6 +622,7 @@
             // 
             // tabActions
             // 
+            this.tabActions.Controls.Add(this.BUT_smartRTL);
             this.tabActions.Controls.Add(this.modifyandSetLoiterRad);
             this.tabActions.Controls.Add(this.BUT_abortland);
             this.tabActions.Controls.Add(this.BUT_resumemis);
@@ -2192,7 +2194,7 @@
             this.windDir1.BackColor = System.Drawing.Color.Transparent;
             this.windDir1.DataBindings.Add(new System.Windows.Forms.Binding("Direction", this.bindingSource1, "wind_dir", true, System.Windows.Forms.DataSourceUpdateMode.Never));
             this.windDir1.DataBindings.Add(new System.Windows.Forms.Binding("Speed", this.bindingSource1, "wind_vel", true, System.Windows.Forms.DataSourceUpdateMode.Never));
-            this.windDir1.Direction = 180D;
+            this.windDir1.Direction = 360D;
             resources.ApplyResources(this.windDir1, "windDir1");
             this.windDir1.Name = "windDir1";
             this.windDir1.Speed = 0D;
@@ -2391,6 +2393,17 @@
             // bindingSourceStatusTab
             // 
             this.bindingSourceStatusTab.DataSource = typeof(MissionPlanner.CurrentState);
+            // 
+            // BUT_smartRTL
+            // 
+            this.BUT_smartRTL.ColorMouseDown = System.Drawing.Color.Empty;
+            this.BUT_smartRTL.ColorMouseOver = System.Drawing.Color.Empty;
+            this.BUT_smartRTL.ColorNotEnabled = System.Drawing.Color.Empty;
+            resources.ApplyResources(this.BUT_smartRTL, "BUT_smartRTL");
+            this.BUT_smartRTL.Name = "BUT_smartRTL";
+            this.toolTip1.SetToolTip(this.BUT_smartRTL, resources.GetString("BUT_smartRTL.ToolTip"));
+            this.BUT_smartRTL.UseVisualStyleBackColor = true;
+            this.BUT_smartRTL.Click += new System.EventHandler(this.BUT_smartRTL_Click);
             // 
             // FlightData
             // 
@@ -2646,5 +2659,6 @@
         private Controls.QuickView quickView5;
         private System.Windows.Forms.ToolStripMenuItem poiatcoordsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem flyToCoordsToolStripMenuItem;
+        private Controls.MyButton BUT_smartRTL;
     }
 }

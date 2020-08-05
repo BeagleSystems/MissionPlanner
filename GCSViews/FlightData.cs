@@ -5065,5 +5065,20 @@ namespace MissionPlanner.GCSViews
                 tabStatus.AutoScrollPosition.Y);
             e.Graphics.DrawImageUnscaled(bmp, 0, 0);
         }
+
+        private void BUT_smartRTL_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                ((Control)sender).Enabled = false;
+                MainV2.comPort.setMode(24);
+            }
+            catch
+            {
+                CustomMessageBox.Show(Strings.CommandFailed, Strings.ERROR);
+            }
+
+            ((Control)sender).Enabled = true;
+        }
     }
 }
