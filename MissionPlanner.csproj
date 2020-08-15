@@ -283,6 +283,10 @@
       <Project>{F4B60F03-F4C8-42CD-A46D-712838DC184B}</Project>
       <Name>Zeroconf</Name>
     </ProjectReference>
+    <ProjectReference Include="RemoteCommandForm\RemoteCommandForm.csproj">
+      <Project>{7040cec7-c0ec-4857-868a-3d62e2b3a35a}</Project>
+      <Name>RemoteCommandForm</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Crc32.NET">

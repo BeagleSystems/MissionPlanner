@@ -188,6 +188,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestAndroid", "..\TestAndro
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetDFULib", "ExtLibs\NetDFULib\NetDFULib.csproj", "{DC7BAD19-540A-4407-8E89-C15C899D74DF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RemoteCommandForm", "RemoteCommandForm\RemoteCommandForm.csproj", "{7040CEC7-C0EC-4857-868A-3D62E2B3A35A}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		ExtLibs\uno\UnoUI\UnoUI.Shared\UnoUI.Shared.projitems*{06b132f9-524b-44c0-9ed6-e0348641ab3d}*SharedItemsImports = 5
@@ -493,6 +495,10 @@ Global
 		{DC7BAD19-540A-4407-8E89-C15C899D74DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DC7BAD19-540A-4407-8E89-C15C899D74DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DC7BAD19-540A-4407-8E89-C15C899D74DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7040CEC7-C0EC-4857-868A-3D62E2B3A35A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7040CEC7-C0EC-4857-868A-3D62E2B3A35A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7040CEC7-C0EC-4857-868A-3D62E2B3A35A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7040CEC7-C0EC-4857-868A-3D62E2B3A35A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

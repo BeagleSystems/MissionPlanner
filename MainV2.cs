@@ -33,6 +33,7 @@ using MissionPlanner.ArduPilot.Mavlink;
 using MissionPlanner.Utilities.HW;
 using Transitions;
 using AltitudeAngelWings;
+using RemoteCommandForm;
 
 
 namespace MissionPlanner
@@ -4480,6 +4481,13 @@ namespace MissionPlanner
                     });
                 }
             }
+        }
+
+        private void remoteCommandToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Form sshForm = new RemoteCmdForm();
+            sshForm.Owner = this;
+            sshForm.Show();
         }
     }
 }
