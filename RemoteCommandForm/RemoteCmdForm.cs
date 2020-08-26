@@ -1,19 +1,14 @@
 ﻿using Renci.SshNet;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Threading;
-using System.Windows.Input;
 using SharpDX.XInput;
 using System.Net.Sockets;
 using System.Net;
-using System.Runtime.CompilerServices;
+using System.Runtime.Remoting.Channels;
+using Microsoft.Win32;
 
 namespace RemoteCommandForm
 {
@@ -23,22 +18,54 @@ namespace RemoteCommandForm
 
         //JoyStick2TcpClient JoyClient;
 
-        Controller joystick = new Controller(UserIndex.One);
+        Controller joystick;
 
         State last_state;
 
         IPAddress tcp_ip;
         int tcp_port;
-        TcpEx tcp;
+        // TcpEx tcp;
 
         int sendCount = 0;
         int ackCount = 0;
 
-        private static bool isTcpConnected;
+        private bool isTcpConnected = false;
+
+        private static System.Timers.Timer sendTcpTimer;
 
         public RemoteCmdForm()
         {
             InitializeComponent();
+
+            last_state = new State();
+
+            tcp_port = 5000;
+
+            sendTcpTimer = new System.Timers.Timer();
+            sendTcpTimer.Interval = 500;
+            sendTcpTimer.AutoReset = true;
+            sendTcpTimer.Elapsed += new System.Timers.ElapsedEventHandler(SendTcpRegular);
+
+        }
+
+        private void SendTcpRegular(object sender, EventArgs e)
+        {
+            try
+            {
+                var control_msg = translate2control(ref last_state);
+
+                byte[] msg = control_msg.getBytes();
+
+                var tcp = TcpConnect();
+                SendContent(tcp, msg);
+                updateLabel(ref control_msg);
+
+                tcp.Disconnect();
+            }
+            catch
+            {
+
+            }
         }
 
         delegate void setLabel(Label label, string content);
@@ -53,6 +80,22 @@ namespace RemoteCommandForm
             else
             {
                 label.Text = content;
+            }
+        }
+
+        delegate void setRichTextBox(RichTextBox box, string content);
+
+        private void SetRichTextBox(RichTextBox box, string content)
+        {
+            if(box.InvokeRequired)
+            {
+                setRichTextBox setThis = new setRichTextBox(SetRichTextBox);
+                box.Invoke(setThis, box, content);
+            }
+            else
+            {
+                box.AppendText(content + Environment.NewLine);
+                box.ScrollToCaret();
             }
         }
 
@@ -412,24 +455,19 @@ namespace RemoteCommandForm
         {
             try
             {
-                sendTcpTimer.Enabled = false;
+                joystick = new Controller(UserIndex.One);
 
-                var controller = new Controller(UserIndex.One);
-
-                var last_state = controller.GetState();
+                last_state = joystick.GetState();
 
                 this.getJoyStateTimer.Enabled = true;
-
-                TcpConnect(addressTextBox.Text, 5000);
-
             }
-            catch
+            catch(Exception ex)
             {
+                SetRichTextBox(richTextBox1, ex.ToString());
                 this.getJoyStateTimer.Enabled = false;
+            }
 
-                sendTcpTimer.Enabled = false;
-                //pass
-            }            
+            
         }
 
         private void RemoteCmdForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -442,31 +480,19 @@ namespace RemoteCommandForm
                 client.Disconnect();
             }
 
-            sendTcpTimer.Enabled = false;
             getJoyStateTimer.Enabled = false;
-            sendTcpTimer.Stop();
-            getJoyStateTimer.Stop();
-            //isTcpConnected = false;
+            Thread.Sleep(110);  //wait the timer to stop
         }
 
-        private void SendTcpMsg(object sender, EventArgs e)
-        {
-            var control_msg = translate2control(ref last_state);
+        //private void SendTcpMsg(object sender, EventArgs e)
+        //{
+        //    var control_msg = translate2control(ref last_state);
 
-            byte[] msg = control_msg.getBytes();
+        //    byte[] msg = control_msg.getBytes();
 
-            if (isTcpConnected)
-            {
-                SendContent(msg);
-                updateLabel(ref control_msg);
-            } 
-            else
-            {
-                TcpReconnect();
-                SendContent(msg);
-                updateLabel(ref control_msg);
-            }
-        }
+        //    SendContent(msg);
+        //    updateLabel(ref control_msg);
+        //}
 
         private void updateLabel(ref CameraControlMessage msg)
         {
@@ -493,13 +519,20 @@ namespace RemoteCommandForm
         {
             CameraControlMessage msg = new CameraControlMessage();
 
-            msg.Pitch = Convert.ToByte(pitchBox.Text);
-            msg.Yaw = Convert.ToByte(yawBox.Text);
-            msg.Zoom = Convert.ToByte(zoomBox.Text);
-            msg.Focus = Convert.ToByte(focusBox.Text);
-            msg.Switch = (byte)getSwitchOp(ref state);
-            msg.Record = (byte)getRecordOp(ref state);
-            msg.QuickCommand = (byte)button2Cmd(JoyStickDataProcess.sortButtons(state));
+            try
+            {
+                msg.Pitch = Convert.ToByte(pitchBox.Text);
+                msg.Yaw = Convert.ToByte(yawBox.Text);
+                msg.Zoom = Convert.ToByte(zoomBox.Text);
+                msg.Focus = Convert.ToByte(focusBox.Text);
+                msg.Switch = (byte)getSwitchOp(ref state);
+                msg.Record = (byte)getRecordOp(ref state);
+                msg.QuickCommand = (byte)button2Cmd(JoyStickDataProcess.sortButtons(state));
+            }
+            catch
+            {
+
+            }
 
             return msg;
         }
@@ -579,9 +612,16 @@ namespace RemoteCommandForm
 
         private void getJoyStateTimer_Tick(object sender, EventArgs e)
         {
-            if(joystick != null)
+            try
             {
-                last_state = joystick.GetState();
+                if (joystick != null)
+                {
+                    last_state = joystick.GetState();
+                }
+            }
+            catch
+            {
+                return;
             }
 
             //update UI
@@ -613,32 +653,15 @@ namespace RemoteCommandForm
         }
 
 
-        public void TcpConnect(string ipaddress, int port)
-        {
-            if (TcpEx.isIPAddressStringValid(ipaddress) == false)
-            {
-                return;
-            }
-
-            byte[] baddr = TcpEx.getAddressBytes(ipaddress);
-            this.tcp_ip = new IPAddress(baddr);
-            this.tcp_port = port;
-            this.tcp = new TcpEx(tcp_ip, tcp_port);
+        public TcpEx TcpConnect()
+        {            
+            TcpEx tcp = new TcpEx(tcp_ip, tcp_port);
             tcp.Connected += new TcpEx.TcpEventHandler(TCP_connected);
             tcp.Disconnected += new TcpEx.TcpEventHandler(TCP_disconnected);
             tcp.DataArrived += new TcpEx.TcpTransmissionEventHandler(TcpDataProcess);
             tcp.ExceptionOccurred += new TcpEx.TcpExceptionEventHandler(TcpExceptionProcess);
             tcp.Connect(tcp_ip, tcp_port);
-        }
-
-        public void TcpReconnect()
-        {
-            tcp.Connect(tcp_ip, tcp_port);
-        }
-
-        public void TcpDisconnect()
-        {
-            tcp.Disconnect();
+            return tcp;
         }
 
         private void TCP_connected(object sender, TcpEventArgs e)
@@ -654,13 +677,8 @@ namespace RemoteCommandForm
         private void TcpExceptionProcess(object sender, TcpExceptionEventArgs e)
         {
             isTcpConnected = false;
-            sendTcpTimer.Enabled = false;
-            sendTcpTimer.Stop();
-            //var result = MessageBox.Show("Tcp connection lost!" + e.Error);
-            //if (result == DialogResult.OK)
-            //{
-            //    sendTcpTimer.Dispose();
-            //}
+            SetRichTextBox(richTextBox1, "TCP connection lost!");
+            SetRichTextBox(richTextBox1, e.ToString());
         }
 
         private void TcpDataProcess(Object sender, TcpTransmissionEventArgs e)
@@ -674,24 +692,33 @@ namespace RemoteCommandForm
             }
         }
 
-        public void SendContent(byte[] content)
+        public void SendContent(TcpEx tcp, byte[] content)
         {
             tcp.Send(content);
             sendCount++;
-            sentCountLabel.Text = sendCount.ToString();
-        }
-
-        private void sendTcpTimer_Tick(object sender, EventArgs e)
-        {
-            if (sendTcpTimer.Enabled)
-            {
-                this.SendTcpMsg(sender, e);
-            }
+            SetLabelText(sentCountLabel, sendCount.ToString());
         }
 
         private void tcpSendButton_Click(object sender, EventArgs e)
         {
-            sendTcpTimer.Enabled = true;
+            if(tcpSendButton.Text.Contains("Connect"))
+            {
+                sendTcpTimer.Start();
+                tcpSendButton.Text = "Disconnect";
+            }
+            else
+            {
+                sendTcpTimer.Stop();
+                if (TcpEx.isIPAddressStringValid(addressTextBox.Text) == false)
+                {
+                    return;
+                }
+
+                byte[] baddr = TcpEx.getAddressBytes(addressTextBox.Text);
+                this.tcp_ip = new IPAddress(baddr);
+                this.tcp_port = 5000;
+                tcpSendButton.Text = "Connect";
+            }            
         }        
     }
 }

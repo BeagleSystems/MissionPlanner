@@ -61,11 +61,11 @@ public class CameraControlMessage
 
     public CameraControlMessage(QuickCmdEnum quick)
     {
-        this.Pitch = 0x80;
-        this.Roll = 0x80;
-        this.Yaw = 0x80;
-        this.Focus = 0x80;
-        this.Zoom = 0x80;
+        this.Pitch = 0x7F;
+        this.Roll = 0x7F;
+        this.Yaw = 0x7F;
+        this.Focus = 0x7F;
+        this.Zoom = 0x7F;
         this.Switch = (byte)SwitchOpEnum.None;
         this.Record = (byte)RecordOpEnum.None;
         this.QuickCommand = (byte)quick;

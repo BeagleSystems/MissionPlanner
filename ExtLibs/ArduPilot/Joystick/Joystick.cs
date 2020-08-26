@@ -8,6 +8,8 @@ using System.Threading;
 using MissionPlanner.ArduPilot;
 using MissionPlanner.Utilities;
 using SharpDX.DirectInput;
+using System.Text;
+using System.Net;
 
 namespace MissionPlanner.Joystick
 {
@@ -26,13 +28,18 @@ namespace MissionPlanner.Joystick
 
         string joystickconfigbutton = "joystickbuttons.xml";
         string joystickconfigaxis = "joystickaxis.xml";
+        string joystickconfigserver = "tcpserver.xml";
 
         // set to default midpoint
-        int hat1 = 65535/2;
-        int hat2 = 65535/2;
-        int custom0 = 65535/2;
-        int custom1 = 65535/2;
+        int hat1 = 65535 / 2;
+        int hat2 = 65535 / 2;
+        int custom0 = 65535 / 2;
+        int custom1 = 65535 / 2;
 
+        //add tcp ip and port
+        //IPAddress tcp_ip = new IPAddress(TcpEx.getAddressBytes("127.0.0.1"));
+        //int tcp_port = 5000;
+        TcpServer tcp_server;
 
         public struct JoyChannel
         {
@@ -40,6 +47,12 @@ namespace MissionPlanner.Joystick
             public joystickaxis axis;
             public bool reverse;
             public int expo;
+        }
+
+        public struct TcpServer
+        {
+            public string tcp_ip;
+            public int tcp_port;
         }
 
         public struct JoyButton
@@ -102,6 +115,12 @@ namespace MissionPlanner.Joystick
             Mount_Control_0,
             Button_axis0,
             Button_axis1,
+
+            // adding new button functions for gimbal camera control
+            follow_yaw_enable,
+            follow_yaw_disable,
+            look_down,
+            center_yaw,
         }
 
 
@@ -193,20 +212,22 @@ namespace MissionPlanner.Joystick
         }
 
         public void loadconfig(string joystickconfigbuttonin = "joystickbuttons.xml",
-            string joystickconfigaxisin = "joystickaxis.xml")
+            string joystickconfigaxisin = "joystickaxis.xml", string tcpserverconfigin = "tcpserver.xml")
         {
-            log.Info("Loading joystick config files " + joystickconfigbuttonin + " " + joystickconfigaxisin);
+            log.Info("Loading joystick config files " + joystickconfigbuttonin + " " + joystickconfigaxisin + tcpserverconfigin);
 
             // save for later
             if (File.Exists(joystickconfigaxisin))
             {
                 this.joystickconfigbutton = joystickconfigbuttonin;
                 this.joystickconfigaxis = joystickconfigaxisin;
+                this.joystickconfigserver = tcpserverconfigin;
             }
             else
             {
                 this.joystickconfigbutton = Settings.GetUserDataDirectory() + joystickconfigbuttonin;
                 this.joystickconfigaxis = Settings.GetUserDataDirectory() + joystickconfigaxisin;
+                this.joystickconfigserver = Settings.GetUserDataDirectory() + joystickconfigserver;
             }
             
             // load config
@@ -242,12 +263,28 @@ namespace MissionPlanner.Joystick
                 }
             }
 
+            if (File.Exists(this.joystickconfigserver))
+            {
+                try
+                {
+                    System.Xml.Serialization.XmlSerializer reader = new System.Xml.Serialization.XmlSerializer(typeof(TcpServer));
+                    using (StreamReader sr = new StreamReader(this.joystickconfigserver))
+                    {
+                        tcp_server = (TcpServer)reader.Deserialize(sr);
+                    }
+                }
+                catch
+                {
+
+                }
+            }
+
             Array.Resize(ref JoyChannels, 20);
         }
 
         public void saveconfig()
         {
-            log.Info("Saving joystick config files " + joystickconfigbutton + " " + joystickconfigaxis);
+            log.Info("Saving joystick config files " + joystickconfigbutton + " " + joystickconfigaxis + joystickconfigserver);
 
             // save config
             System.Xml.Serialization.XmlSerializer writer =
@@ -263,6 +300,17 @@ namespace MissionPlanner.Joystick
             using (StreamWriter sw = new StreamWriter(joystickconfigaxis))
             {
                 writer.Serialize(sw, JoyChannels);
+            }
+
+            //add to tcp server xml the first time
+            //tcp_server.tcp_ip = "192.168.10.202";
+            //tcp_server.tcp_port = 5000;
+
+            writer = new System.Xml.Serialization.XmlSerializer(typeof(TcpServer));
+
+            using (StreamWriter sw = new StreamWriter(joystickconfigserver))
+            {
+                writer.Serialize(sw, tcp_server);
             }
         }
 
@@ -868,8 +916,7 @@ namespace MissionPlanner.Joystick
                                 int relaynumber = (int) but.p1;
                                 int repeat = (int) but.p2;
                                 int time = (int) but.p3;
-                                Interface.doCommand(MAVLink.MAV_CMD.DO_REPEAT_RELAY, relaynumber, repeat, time, 0,
-                                    0, 0, 0);
+                                Interface.doCommand(MAVLink.MAV_CMD.DO_REPEAT_RELAY, relaynumber, repeat, time, 0, 0, 0, 0);
                             }
                             catch
                             {
@@ -991,7 +1038,76 @@ namespace MissionPlanner.Joystick
                             }
                         }, null);
                         break;
+                    case buttonfunction.look_down:
+                        //send tcp message include quick command
+                        SendQuickCommandToTcpServer(CameraControlMessage.QuickCmdEnum.LookDown);
+                        //CustomMessageBox.Show("send look down");
+                        break;
+                    case buttonfunction.center_yaw:
+                        SendQuickCommandToTcpServer(CameraControlMessage.QuickCmdEnum.CenterYaw);
+                        //CustomMessageBox.Show("send center yaw");
+                        break;
+                    case buttonfunction.follow_yaw_enable:
+                        SendQuickCommandToTcpServer(CameraControlMessage.QuickCmdEnum.FollowYawEnable);
+                        //CustomMessageBox.Show("follow yaw enable");
+                        break;
+                    case buttonfunction.follow_yaw_disable:
+                        SendQuickCommandToTcpServer(CameraControlMessage.QuickCmdEnum.FollowYawDisable);
+                        //CustomMessageBox.Show("follow yaw disable");
+                        break;
                 }
+            }
+        }
+
+        private void SendQuickCommandToTcpServer(CameraControlMessage.QuickCmdEnum quick)
+        {
+            var message = new CameraControlMessage(quick);
+            try
+            {
+                var tcp = TcpConnect();
+
+                tcp.Send(message.getBytes());
+
+                tcp.Disconnect();
+            }
+            catch
+            {
+                CustomMessageBox.Show("Failed to send quick command to TCP server");
+            }
+        }
+
+
+        public TcpEx TcpConnect()
+        {
+            IPAddress tcp_ip = new IPAddress(TcpEx.getAddressBytes(tcp_server.tcp_ip));
+            int tcp_port = tcp_server.tcp_port;
+            TcpEx tcp = new TcpEx(tcp_ip, tcp_port);
+            tcp.Connected += new TcpEx.TcpEventHandler(TCP_connected);
+            tcp.Disconnected += new TcpEx.TcpEventHandler(TCP_disconnected);
+            tcp.DataArrived += new TcpEx.TcpTransmissionEventHandler(TcpDataProcess);
+            tcp.ExceptionOccurred += new TcpEx.TcpExceptionEventHandler(TcpExceptionProcess);
+            tcp.Connect(tcp_ip, tcp_port);
+            return tcp;
+        }
+
+        private void TCP_connected(object sender, TcpEventArgs e)
+        {
+        }
+
+        private void TCP_disconnected(object sender, TcpEventArgs e)
+        {
+        }
+
+        private void TcpExceptionProcess(object sender, TcpExceptionEventArgs e)
+        {
+        }
+
+        private void TcpDataProcess(Object sender, TcpTransmissionEventArgs e)
+        {
+            byte[] data = e.Data;
+            string resp = Encoding.Default.GetString(data);
+            if (resp.Contains("ACK"))
+            {
             }
         }
 

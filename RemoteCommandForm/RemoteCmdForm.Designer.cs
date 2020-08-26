@@ -74,7 +74,6 @@
             this.label10 = new System.Windows.Forms.Label();
             this.switchLabel = new System.Windows.Forms.Label();
             this.recordStateLabel = new System.Windows.Forms.Label();
-            this.sendTcpTimer = new System.Windows.Forms.Timer(this.components);
             this.tcpSendButton = new System.Windows.Forms.Button();
             this.restartTcpButton = new System.Windows.Forms.Button();
             this.tcpGrpBox = new System.Windows.Forms.GroupBox();
@@ -501,11 +500,6 @@
             this.recordStateLabel.TabIndex = 39;
             this.recordStateLabel.Text = "Stopped";
             // 
-            // sendTcpTimer
-            // 
-            this.sendTcpTimer.Interval = 500;
-            this.sendTcpTimer.Tick += new System.EventHandler(this.sendTcpTimer_Tick);
-            // 
             // tcpSendButton
             // 
             this.tcpSendButton.Location = new System.Drawing.Point(682, 147);
@@ -652,7 +646,6 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label switchLabel;
         private System.Windows.Forms.Label recordStateLabel;
-        private System.Windows.Forms.Timer sendTcpTimer;
         private System.Windows.Forms.Button tcpSendButton;
         private System.Windows.Forms.Button restartTcpButton;
         private System.Windows.Forms.GroupBox tcpGrpBox;
