@@ -121,6 +121,7 @@ namespace MissionPlanner.Joystick
             follow_yaw_disable,
             look_down,
             center_yaw,
+            return_all_center,
         }
 
 
@@ -1054,6 +1055,9 @@ namespace MissionPlanner.Joystick
                     case buttonfunction.follow_yaw_disable:
                         SendQuickCommandToTcpServer(CameraControlMessage.QuickCmdEnum.FollowYawDisable);
                         //CustomMessageBox.Show("follow yaw disable");
+                        break;
+                    case buttonfunction.return_all_center:
+                        SendQuickCommandToTcpServer(CameraControlMessage.QuickCmdEnum.ReturnHead);
                         break;
                 }
             }
