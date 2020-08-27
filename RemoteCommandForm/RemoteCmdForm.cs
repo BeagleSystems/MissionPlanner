@@ -654,7 +654,14 @@ namespace RemoteCommandForm
 
 
         public TcpEx TcpConnect()
-        {            
+        {   
+            if(tcp_ip == null)
+            {
+                byte[] baddr = TcpEx.getAddressBytes(addressTextBox.Text);
+                this.tcp_ip = new IPAddress(baddr);
+                this.tcp_port = 5000;
+            }
+
             TcpEx tcp = new TcpEx(tcp_ip, tcp_port);
             tcp.Connected += new TcpEx.TcpEventHandler(TCP_connected);
             tcp.Disconnected += new TcpEx.TcpEventHandler(TCP_disconnected);
@@ -719,6 +726,89 @@ namespace RemoteCommandForm
                 this.tcp_port = 5000;
                 tcpSendButton.Text = "Connect";
             }            
-        }        
+        }
+
+        private void angleControlRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            if(angleControlRadioButton.Checked == true)
+            {
+                RControlRadioButton.Checked = false;
+                currentRollTextBox.Enabled = true;
+                currentPitchTextBox.Enabled = true;
+                currentYawTextBox.Enabled = true;
+                refHomeCheckBox.Enabled = true;
+            }
+            else
+            {
+                RControlRadioButton.Checked = true;
+                currentRollTextBox.Enabled = false;
+                currentPitchTextBox.Enabled = false;
+                currentYawTextBox.Enabled = false;
+                refHomeCheckBox.Enabled = false;
+            }
+        }
+
+        private void RControlRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            if(RControlRadioButton.Checked)
+            {
+                angleControlRadioButton.Checked = false;
+                setRollNumericUpDown.Maximum = setPitchNumericUpDown.Maximum = setYawNumericUpDown.Maximum = 500;
+                setRollNumericUpDown.Minimum = setPitchNumericUpDown.Minimum = setYawNumericUpDown.Minimum = -500;
+                setRollNumericUpDown.Value = setPitchNumericUpDown.Value = setYawNumericUpDown.Value = 0;
+            }
+            else
+            {
+                angleControlRadioButton.Checked = true;
+                setRollNumericUpDown.Maximum = 45;
+                setRollNumericUpDown.Minimum = -45;
+                setPitchNumericUpDown.Maximum = 90;
+                setPitchNumericUpDown.Minimum = -90;
+                setYawNumericUpDown.Maximum = 120;
+                setYawNumericUpDown.Minimum = -120;
+                setRollNumericUpDown.Value = setPitchNumericUpDown.Value = setYawNumericUpDown.Value = 0;
+            }
+        }
+
+        private AngleControlMessage.ControlModeEnum getCurrentControlMode()
+        {
+            if (RControlRadioButton.Checked)
+            {
+                return AngleControlMessage.ControlModeEnum.MODE_RC;
+            }
+            else //angle radio button is checked
+            {
+                if(refHomeCheckBox.Checked)
+                {
+                    return AngleControlMessage.ControlModeEnum.MODE_ANGLE_REL_FRAME;
+                }
+                else
+                {
+                    return AngleControlMessage.ControlModeEnum.MODE_ANGLE;
+                }
+            }
+        }
+
+        private void sendPosButton_Click(object sender, EventArgs e)
+        {
+            short roll = Convert.ToInt16(setRollNumericUpDown.Value);
+            short pitch = Convert.ToInt16(setPitchNumericUpDown.Value);
+            short yaw = Convert.ToInt16(setYawNumericUpDown.Value);
+
+            var mode = getCurrentControlMode();
+            var message = new AngleControlMessage(pitch, roll, yaw, mode);
+            try
+            {
+                var tcp = TcpConnect();
+
+                tcp.Send(message.getBytes());
+
+                tcp.Disconnect();
+            }
+            catch(Exception ex)
+            {
+                SetRichTextBox(richTextBox1, "Failed to send angle control command to TCP server: " + ex.ToString() );
+            }
+        }
     }
 }

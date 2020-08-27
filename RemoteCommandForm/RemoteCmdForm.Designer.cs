@@ -78,12 +78,42 @@
             this.restartTcpButton = new System.Windows.Forms.Button();
             this.tcpGrpBox = new System.Windows.Forms.GroupBox();
             this.label11 = new System.Windows.Forms.Label();
+            this.remoteSSHTabControl = new System.Windows.Forms.TabControl();
+            this.commTab = new System.Windows.Forms.TabPage();
+            this.mavTab = new System.Windows.Forms.TabPage();
+            this.videoTab = new System.Windows.Forms.TabPage();
+            this.joystickTab = new System.Windows.Forms.TabPage();
+            this.gimbalTab = new System.Windows.Forms.TabPage();
+            this.refHomeCheckBox = new System.Windows.Forms.CheckBox();
+            this.angleControlRadioButton = new System.Windows.Forms.RadioButton();
+            this.RControlRadioButton = new System.Windows.Forms.RadioButton();
+            this.setYawNumericUpDown = new System.Windows.Forms.NumericUpDown();
+            this.setPitchNumericUpDown = new System.Windows.Forms.NumericUpDown();
+            this.setRollNumericUpDown = new System.Windows.Forms.NumericUpDown();
+            this.label16 = new System.Windows.Forms.Label();
+            this.currentYawTextBox = new System.Windows.Forms.TextBox();
+            this.currentPitchTextBox = new System.Windows.Forms.TextBox();
+            this.currentRollTextBox = new System.Windows.Forms.TextBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.sendPosButton = new System.Windows.Forms.Button();
             this.videoControlGrp.SuspendLayout();
             this.mavControlGrp.SuspendLayout();
             this.communicationControlGrp.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pitchBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.yawBar)).BeginInit();
             this.tcpGrpBox.SuspendLayout();
+            this.remoteSSHTabControl.SuspendLayout();
+            this.commTab.SuspendLayout();
+            this.mavTab.SuspendLayout();
+            this.videoTab.SuspendLayout();
+            this.joystickTab.SuspendLayout();
+            this.gimbalTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.setYawNumericUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.setPitchNumericUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.setRollNumericUpDown)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -140,9 +170,9 @@
             // 
             // richTextBox1
             // 
-            this.richTextBox1.Location = new System.Drawing.Point(12, 126);
+            this.richTextBox1.Location = new System.Drawing.Point(12, 317);
             this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(550, 312);
+            this.richTextBox1.Size = new System.Drawing.Size(411, 320);
             this.richTextBox1.TabIndex = 6;
             this.richTextBox1.Text = "";
             // 
@@ -174,16 +204,16 @@
             this.videoControlGrp.Controls.Add(this.diableVideoButton);
             this.videoControlGrp.Controls.Add(this.enableVideoButton);
             this.videoControlGrp.Enabled = false;
-            this.videoControlGrp.Location = new System.Drawing.Point(568, 12);
+            this.videoControlGrp.Location = new System.Drawing.Point(3, 6);
             this.videoControlGrp.Name = "videoControlGrp";
-            this.videoControlGrp.Size = new System.Drawing.Size(220, 124);
+            this.videoControlGrp.Size = new System.Drawing.Size(391, 94);
             this.videoControlGrp.TabIndex = 9;
             this.videoControlGrp.TabStop = false;
             this.videoControlGrp.Text = "Video Control";
             // 
             // stopVideoButton
             // 
-            this.stopVideoButton.Location = new System.Drawing.Point(114, 78);
+            this.stopVideoButton.Location = new System.Drawing.Point(220, 56);
             this.stopVideoButton.Name = "stopVideoButton";
             this.stopVideoButton.Size = new System.Drawing.Size(100, 35);
             this.stopVideoButton.TabIndex = 3;
@@ -193,7 +223,7 @@
             // 
             // startVideoButton
             // 
-            this.startVideoButton.Location = new System.Drawing.Point(8, 77);
+            this.startVideoButton.Location = new System.Drawing.Point(220, 15);
             this.startVideoButton.Name = "startVideoButton";
             this.startVideoButton.Size = new System.Drawing.Size(100, 35);
             this.startVideoButton.TabIndex = 2;
@@ -226,16 +256,16 @@
             this.mavControlGrp.Controls.Add(this.restartMavButton);
             this.mavControlGrp.Controls.Add(this.checkMavButton);
             this.mavControlGrp.Enabled = false;
-            this.mavControlGrp.Location = new System.Drawing.Point(415, 12);
+            this.mavControlGrp.Location = new System.Drawing.Point(6, 6);
             this.mavControlGrp.Name = "mavControlGrp";
-            this.mavControlGrp.Size = new System.Drawing.Size(147, 108);
+            this.mavControlGrp.Size = new System.Drawing.Size(396, 108);
             this.mavControlGrp.TabIndex = 10;
             this.mavControlGrp.TabStop = false;
             this.mavControlGrp.Text = "MavProxy";
             // 
             // restartMavButton
             // 
-            this.restartMavButton.Location = new System.Drawing.Point(36, 76);
+            this.restartMavButton.Location = new System.Drawing.Point(87, 19);
             this.restartMavButton.Name = "restartMavButton";
             this.restartMavButton.Size = new System.Drawing.Size(75, 23);
             this.restartMavButton.TabIndex = 2;
@@ -245,7 +275,7 @@
             // 
             // checkMavButton
             // 
-            this.checkMavButton.Location = new System.Drawing.Point(36, 35);
+            this.checkMavButton.Location = new System.Drawing.Point(6, 19);
             this.checkMavButton.Name = "checkMavButton";
             this.checkMavButton.Size = new System.Drawing.Size(75, 23);
             this.checkMavButton.TabIndex = 1;
@@ -257,7 +287,7 @@
             // 
             this.communicationControlGrp.Controls.Add(this.checkVPNButton);
             this.communicationControlGrp.Enabled = false;
-            this.communicationControlGrp.Location = new System.Drawing.Point(287, 12);
+            this.communicationControlGrp.Location = new System.Drawing.Point(6, 7);
             this.communicationControlGrp.Name = "communicationControlGrp";
             this.communicationControlGrp.Size = new System.Drawing.Size(122, 51);
             this.communicationControlGrp.TabIndex = 11;
@@ -276,7 +306,7 @@
             // 
             // reconnectJoystickButton
             // 
-            this.reconnectJoystickButton.Location = new System.Drawing.Point(576, 147);
+            this.reconnectJoystickButton.Location = new System.Drawing.Point(19, 13);
             this.reconnectJoystickButton.Name = "reconnectJoystickButton";
             this.reconnectJoystickButton.Size = new System.Drawing.Size(100, 23);
             this.reconnectJoystickButton.TabIndex = 4;
@@ -287,7 +317,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(573, 176);
+            this.label4.Location = new System.Drawing.Point(16, 42);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(31, 13);
             this.label4.TabIndex = 13;
@@ -299,7 +329,7 @@
             // 
             // pitchBar
             // 
-            this.pitchBar.Location = new System.Drawing.Point(610, 176);
+            this.pitchBar.Location = new System.Drawing.Point(53, 42);
             this.pitchBar.Maximum = 255;
             this.pitchBar.Name = "pitchBar";
             this.pitchBar.Size = new System.Drawing.Size(164, 45);
@@ -309,7 +339,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(573, 227);
+            this.label6.Location = new System.Drawing.Point(16, 93);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(28, 13);
             this.label6.TabIndex = 18;
@@ -317,7 +347,7 @@
             // 
             // yawBar
             // 
-            this.yawBar.Location = new System.Drawing.Point(610, 227);
+            this.yawBar.Location = new System.Drawing.Point(53, 93);
             this.yawBar.Maximum = 255;
             this.yawBar.Name = "yawBar";
             this.yawBar.Size = new System.Drawing.Size(164, 45);
@@ -326,7 +356,7 @@
             // 
             // pitchBox
             // 
-            this.pitchBox.Location = new System.Drawing.Point(568, 192);
+            this.pitchBox.Location = new System.Drawing.Point(11, 58);
             this.pitchBox.Name = "pitchBox";
             this.pitchBox.Size = new System.Drawing.Size(46, 20);
             this.pitchBox.TabIndex = 20;
@@ -334,7 +364,7 @@
             // 
             // yawBox
             // 
-            this.yawBox.Location = new System.Drawing.Point(568, 243);
+            this.yawBox.Location = new System.Drawing.Point(11, 109);
             this.yawBox.Name = "yawBox";
             this.yawBox.Size = new System.Drawing.Size(46, 20);
             this.yawBox.TabIndex = 21;
@@ -343,7 +373,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(565, 425);
+            this.label5.Location = new System.Drawing.Point(228, 142);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(29, 13);
             this.label5.TabIndex = 22;
@@ -352,7 +382,7 @@
             // sentCountLabel
             // 
             this.sentCountLabel.AutoSize = true;
-            this.sentCountLabel.Location = new System.Drawing.Point(607, 425);
+            this.sentCountLabel.Location = new System.Drawing.Point(270, 142);
             this.sentCountLabel.Name = "sentCountLabel";
             this.sentCountLabel.Size = new System.Drawing.Size(13, 13);
             this.sentCountLabel.TabIndex = 23;
@@ -361,7 +391,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(679, 425);
+            this.label8.Location = new System.Drawing.Point(342, 142);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(26, 13);
             this.label8.TabIndex = 24;
@@ -370,7 +400,7 @@
             // ackCountLabel
             // 
             this.ackCountLabel.AutoSize = true;
-            this.ackCountLabel.Location = new System.Drawing.Point(720, 425);
+            this.ackCountLabel.Location = new System.Drawing.Point(383, 142);
             this.ackCountLabel.Name = "ackCountLabel";
             this.ackCountLabel.Size = new System.Drawing.Size(13, 13);
             this.ackCountLabel.TabIndex = 25;
@@ -378,7 +408,7 @@
             // 
             // recenterButton
             // 
-            this.recenterButton.Location = new System.Drawing.Point(618, 343);
+            this.recenterButton.Location = new System.Drawing.Point(245, 61);
             this.recenterButton.Name = "recenterButton";
             this.recenterButton.Size = new System.Drawing.Size(75, 23);
             this.recenterButton.TabIndex = 26;
@@ -387,7 +417,7 @@
             // 
             // lookdownButton
             // 
-            this.lookdownButton.Location = new System.Drawing.Point(699, 343);
+            this.lookdownButton.Location = new System.Drawing.Point(326, 61);
             this.lookdownButton.Name = "lookdownButton";
             this.lookdownButton.Size = new System.Drawing.Size(75, 23);
             this.lookdownButton.TabIndex = 27;
@@ -396,7 +426,7 @@
             // 
             // motorOffButton
             // 
-            this.motorOffButton.Location = new System.Drawing.Point(699, 314);
+            this.motorOffButton.Location = new System.Drawing.Point(326, 32);
             this.motorOffButton.Name = "motorOffButton";
             this.motorOffButton.Size = new System.Drawing.Size(75, 23);
             this.motorOffButton.TabIndex = 28;
@@ -405,7 +435,7 @@
             // 
             // followYawOnButton
             // 
-            this.followYawOnButton.Location = new System.Drawing.Point(618, 372);
+            this.followYawOnButton.Location = new System.Drawing.Point(245, 90);
             this.followYawOnButton.Name = "followYawOnButton";
             this.followYawOnButton.Size = new System.Drawing.Size(75, 23);
             this.followYawOnButton.TabIndex = 29;
@@ -414,7 +444,7 @@
             // 
             // followYawOffButton
             // 
-            this.followYawOffButton.Location = new System.Drawing.Point(699, 372);
+            this.followYawOffButton.Location = new System.Drawing.Point(326, 90);
             this.followYawOffButton.Name = "followYawOffButton";
             this.followYawOffButton.Size = new System.Drawing.Size(75, 23);
             this.followYawOffButton.TabIndex = 30;
@@ -423,7 +453,7 @@
             // 
             // motorOnButton
             // 
-            this.motorOnButton.Location = new System.Drawing.Point(618, 314);
+            this.motorOnButton.Location = new System.Drawing.Point(245, 32);
             this.motorOnButton.Name = "motorOnButton";
             this.motorOnButton.Size = new System.Drawing.Size(75, 23);
             this.motorOnButton.TabIndex = 31;
@@ -432,7 +462,7 @@
             // 
             // zoomBox
             // 
-            this.zoomBox.Location = new System.Drawing.Point(618, 273);
+            this.zoomBox.Location = new System.Drawing.Point(61, 139);
             this.zoomBox.Name = "zoomBox";
             this.zoomBox.Size = new System.Drawing.Size(46, 20);
             this.zoomBox.TabIndex = 33;
@@ -441,7 +471,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(573, 276);
+            this.label7.Location = new System.Drawing.Point(16, 142);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(34, 13);
             this.label7.TabIndex = 32;
@@ -449,7 +479,7 @@
             // 
             // focusBox
             // 
-            this.focusBox.Location = new System.Drawing.Point(721, 273);
+            this.focusBox.Location = new System.Drawing.Point(164, 139);
             this.focusBox.Name = "focusBox";
             this.focusBox.Size = new System.Drawing.Size(46, 20);
             this.focusBox.TabIndex = 35;
@@ -458,7 +488,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(679, 276);
+            this.label9.Location = new System.Drawing.Point(122, 142);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(36, 13);
             this.label9.TabIndex = 34;
@@ -467,7 +497,7 @@
             // QuickLabel
             // 
             this.QuickLabel.AutoSize = true;
-            this.QuickLabel.Location = new System.Drawing.Point(615, 298);
+            this.QuickLabel.Location = new System.Drawing.Point(242, 16);
             this.QuickLabel.Name = "QuickLabel";
             this.QuickLabel.Size = new System.Drawing.Size(35, 13);
             this.QuickLabel.TabIndex = 36;
@@ -476,7 +506,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(568, 319);
+            this.label10.Location = new System.Drawing.Point(243, 117);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(34, 13);
             this.label10.TabIndex = 37;
@@ -485,7 +515,7 @@
             // switchLabel
             // 
             this.switchLabel.AutoSize = true;
-            this.switchLabel.Location = new System.Drawing.Point(568, 348);
+            this.switchLabel.Location = new System.Drawing.Point(298, 117);
             this.switchLabel.Name = "switchLabel";
             this.switchLabel.Size = new System.Drawing.Size(34, 13);
             this.switchLabel.TabIndex = 38;
@@ -494,7 +524,7 @@
             // recordStateLabel
             // 
             this.recordStateLabel.AutoSize = true;
-            this.recordStateLabel.Location = new System.Drawing.Point(568, 377);
+            this.recordStateLabel.Location = new System.Drawing.Point(354, 117);
             this.recordStateLabel.Name = "recordStateLabel";
             this.recordStateLabel.Size = new System.Drawing.Size(47, 13);
             this.recordStateLabel.TabIndex = 39;
@@ -502,7 +532,7 @@
             // 
             // tcpSendButton
             // 
-            this.tcpSendButton.Location = new System.Drawing.Point(682, 147);
+            this.tcpSendButton.Location = new System.Drawing.Point(125, 13);
             this.tcpSendButton.Name = "tcpSendButton";
             this.tcpSendButton.Size = new System.Drawing.Size(100, 23);
             this.tcpSendButton.TabIndex = 40;
@@ -524,7 +554,7 @@
             // 
             this.tcpGrpBox.Controls.Add(this.restartTcpButton);
             this.tcpGrpBox.Enabled = false;
-            this.tcpGrpBox.Location = new System.Drawing.Point(287, 69);
+            this.tcpGrpBox.Location = new System.Drawing.Point(134, 7);
             this.tcpGrpBox.Name = "tcpGrpBox";
             this.tcpGrpBox.Size = new System.Drawing.Size(122, 51);
             this.tcpGrpBox.TabIndex = 12;
@@ -540,45 +570,267 @@
             this.label11.TabIndex = 41;
             this.label11.Text = "Run Remote Commands over SSH";
             // 
+            // remoteSSHTabControl
+            // 
+            this.remoteSSHTabControl.Controls.Add(this.commTab);
+            this.remoteSSHTabControl.Controls.Add(this.mavTab);
+            this.remoteSSHTabControl.Controls.Add(this.videoTab);
+            this.remoteSSHTabControl.Controls.Add(this.joystickTab);
+            this.remoteSSHTabControl.Controls.Add(this.gimbalTab);
+            this.remoteSSHTabControl.Location = new System.Drawing.Point(12, 115);
+            this.remoteSSHTabControl.Name = "remoteSSHTabControl";
+            this.remoteSSHTabControl.SelectedIndex = 0;
+            this.remoteSSHTabControl.Size = new System.Drawing.Size(415, 196);
+            this.remoteSSHTabControl.TabIndex = 42;
+            // 
+            // commTab
+            // 
+            this.commTab.Controls.Add(this.communicationControlGrp);
+            this.commTab.Controls.Add(this.tcpGrpBox);
+            this.commTab.Location = new System.Drawing.Point(4, 22);
+            this.commTab.Name = "commTab";
+            this.commTab.Padding = new System.Windows.Forms.Padding(3);
+            this.commTab.Size = new System.Drawing.Size(407, 170);
+            this.commTab.TabIndex = 0;
+            this.commTab.Text = "Communication";
+            this.commTab.UseVisualStyleBackColor = true;
+            // 
+            // mavTab
+            // 
+            this.mavTab.Controls.Add(this.mavControlGrp);
+            this.mavTab.Location = new System.Drawing.Point(4, 22);
+            this.mavTab.Name = "mavTab";
+            this.mavTab.Padding = new System.Windows.Forms.Padding(3);
+            this.mavTab.Size = new System.Drawing.Size(407, 170);
+            this.mavTab.TabIndex = 1;
+            this.mavTab.Text = "MavProxy";
+            this.mavTab.UseVisualStyleBackColor = true;
+            // 
+            // videoTab
+            // 
+            this.videoTab.Controls.Add(this.videoControlGrp);
+            this.videoTab.Location = new System.Drawing.Point(4, 22);
+            this.videoTab.Name = "videoTab";
+            this.videoTab.Size = new System.Drawing.Size(407, 170);
+            this.videoTab.TabIndex = 2;
+            this.videoTab.Text = "VIdeoControl";
+            this.videoTab.UseVisualStyleBackColor = true;
+            // 
+            // joystickTab
+            // 
+            this.joystickTab.Controls.Add(this.tcpSendButton);
+            this.joystickTab.Controls.Add(this.reconnectJoystickButton);
+            this.joystickTab.Controls.Add(this.label4);
+            this.joystickTab.Controls.Add(this.pitchBar);
+            this.joystickTab.Controls.Add(this.label6);
+            this.joystickTab.Controls.Add(this.recordStateLabel);
+            this.joystickTab.Controls.Add(this.yawBar);
+            this.joystickTab.Controls.Add(this.switchLabel);
+            this.joystickTab.Controls.Add(this.pitchBox);
+            this.joystickTab.Controls.Add(this.label10);
+            this.joystickTab.Controls.Add(this.yawBox);
+            this.joystickTab.Controls.Add(this.QuickLabel);
+            this.joystickTab.Controls.Add(this.label5);
+            this.joystickTab.Controls.Add(this.focusBox);
+            this.joystickTab.Controls.Add(this.sentCountLabel);
+            this.joystickTab.Controls.Add(this.label9);
+            this.joystickTab.Controls.Add(this.label8);
+            this.joystickTab.Controls.Add(this.zoomBox);
+            this.joystickTab.Controls.Add(this.ackCountLabel);
+            this.joystickTab.Controls.Add(this.label7);
+            this.joystickTab.Controls.Add(this.recenterButton);
+            this.joystickTab.Controls.Add(this.motorOnButton);
+            this.joystickTab.Controls.Add(this.lookdownButton);
+            this.joystickTab.Controls.Add(this.followYawOffButton);
+            this.joystickTab.Controls.Add(this.motorOffButton);
+            this.joystickTab.Controls.Add(this.followYawOnButton);
+            this.joystickTab.Location = new System.Drawing.Point(4, 22);
+            this.joystickTab.Name = "joystickTab";
+            this.joystickTab.Size = new System.Drawing.Size(407, 170);
+            this.joystickTab.TabIndex = 3;
+            this.joystickTab.Text = "XboxController";
+            this.joystickTab.UseVisualStyleBackColor = true;
+            // 
+            // gimbalTab
+            // 
+            this.gimbalTab.Controls.Add(this.sendPosButton);
+            this.gimbalTab.Controls.Add(this.refHomeCheckBox);
+            this.gimbalTab.Controls.Add(this.angleControlRadioButton);
+            this.gimbalTab.Controls.Add(this.RControlRadioButton);
+            this.gimbalTab.Controls.Add(this.setYawNumericUpDown);
+            this.gimbalTab.Controls.Add(this.setPitchNumericUpDown);
+            this.gimbalTab.Controls.Add(this.setRollNumericUpDown);
+            this.gimbalTab.Controls.Add(this.label16);
+            this.gimbalTab.Controls.Add(this.currentYawTextBox);
+            this.gimbalTab.Controls.Add(this.currentPitchTextBox);
+            this.gimbalTab.Controls.Add(this.currentRollTextBox);
+            this.gimbalTab.Controls.Add(this.label15);
+            this.gimbalTab.Controls.Add(this.label14);
+            this.gimbalTab.Controls.Add(this.label13);
+            this.gimbalTab.Controls.Add(this.label12);
+            this.gimbalTab.Location = new System.Drawing.Point(4, 22);
+            this.gimbalTab.Name = "gimbalTab";
+            this.gimbalTab.Size = new System.Drawing.Size(407, 170);
+            this.gimbalTab.TabIndex = 4;
+            this.gimbalTab.Text = "GimbalPosControl";
+            this.gimbalTab.UseVisualStyleBackColor = true;
+            // 
+            // refHomeCheckBox
+            // 
+            this.refHomeCheckBox.AutoSize = true;
+            this.refHomeCheckBox.Location = new System.Drawing.Point(258, 121);
+            this.refHomeCheckBox.Name = "refHomeCheckBox";
+            this.refHomeCheckBox.Size = new System.Drawing.Size(104, 17);
+            this.refHomeCheckBox.TabIndex = 16;
+            this.refHomeCheckBox.Text = "Angle Ref Home";
+            this.refHomeCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // angleControlRadioButton
+            // 
+            this.angleControlRadioButton.AutoSize = true;
+            this.angleControlRadioButton.Checked = true;
+            this.angleControlRadioButton.Location = new System.Drawing.Point(136, 120);
+            this.angleControlRadioButton.Name = "angleControlRadioButton";
+            this.angleControlRadioButton.Size = new System.Drawing.Size(116, 17);
+            this.angleControlRadioButton.TabIndex = 15;
+            this.angleControlRadioButton.TabStop = true;
+            this.angleControlRadioButton.Text = "Angle control mode";
+            this.angleControlRadioButton.UseVisualStyleBackColor = true;
+            this.angleControlRadioButton.CheckedChanged += new System.EventHandler(this.angleControlRadioButton_CheckedChanged);
+            // 
+            // RControlRadioButton
+            // 
+            this.RControlRadioButton.AutoSize = true;
+            this.RControlRadioButton.Location = new System.Drawing.Point(12, 120);
+            this.RControlRadioButton.Name = "RControlRadioButton";
+            this.RControlRadioButton.Size = new System.Drawing.Size(104, 17);
+            this.RControlRadioButton.TabIndex = 14;
+            this.RControlRadioButton.Text = "RC control mode";
+            this.RControlRadioButton.UseVisualStyleBackColor = true;
+            this.RControlRadioButton.CheckedChanged += new System.EventHandler(this.RControlRadioButton_CheckedChanged);
+            // 
+            // setYawNumericUpDown
+            // 
+            this.setYawNumericUpDown.Increment = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.setYawNumericUpDown.Location = new System.Drawing.Point(136, 81);
+            this.setYawNumericUpDown.Name = "setYawNumericUpDown";
+            this.setYawNumericUpDown.Size = new System.Drawing.Size(68, 20);
+            this.setYawNumericUpDown.TabIndex = 10;
+            // 
+            // setPitchNumericUpDown
+            // 
+            this.setPitchNumericUpDown.Increment = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            this.setPitchNumericUpDown.Location = new System.Drawing.Point(136, 55);
+            this.setPitchNumericUpDown.Name = "setPitchNumericUpDown";
+            this.setPitchNumericUpDown.Size = new System.Drawing.Size(68, 20);
+            this.setPitchNumericUpDown.TabIndex = 9;
+            // 
+            // setRollNumericUpDown
+            // 
+            this.setRollNumericUpDown.Increment = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            this.setRollNumericUpDown.Location = new System.Drawing.Point(136, 28);
+            this.setRollNumericUpDown.Name = "setRollNumericUpDown";
+            this.setRollNumericUpDown.Size = new System.Drawing.Size(68, 20);
+            this.setRollNumericUpDown.TabIndex = 8;
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(144, 9);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(39, 13);
+            this.label16.TabIndex = 7;
+            this.label16.Text = "Set To";
+            // 
+            // currentYawTextBox
+            // 
+            this.currentYawTextBox.Location = new System.Drawing.Point(53, 80);
+            this.currentYawTextBox.Name = "currentYawTextBox";
+            this.currentYawTextBox.Size = new System.Drawing.Size(63, 20);
+            this.currentYawTextBox.TabIndex = 6;
+            // 
+            // currentPitchTextBox
+            // 
+            this.currentPitchTextBox.Location = new System.Drawing.Point(53, 54);
+            this.currentPitchTextBox.Name = "currentPitchTextBox";
+            this.currentPitchTextBox.Size = new System.Drawing.Size(63, 20);
+            this.currentPitchTextBox.TabIndex = 5;
+            // 
+            // currentRollTextBox
+            // 
+            this.currentRollTextBox.Location = new System.Drawing.Point(53, 28);
+            this.currentRollTextBox.Name = "currentRollTextBox";
+            this.currentRollTextBox.Size = new System.Drawing.Size(63, 20);
+            this.currentRollTextBox.TabIndex = 4;
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(50, 9);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(71, 13);
+            this.label15.TabIndex = 3;
+            this.label15.Text = "Current Angle";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(4, 83);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(28, 13);
+            this.label14.TabIndex = 2;
+            this.label14.Text = "Yaw";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(4, 57);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(31, 13);
+            this.label13.TabIndex = 1;
+            this.label13.Text = "Pitch";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(4, 31);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(25, 13);
+            this.label12.TabIndex = 0;
+            this.label12.Text = "Roll";
+            // 
+            // sendPosButton
+            // 
+            this.sendPosButton.Location = new System.Drawing.Point(210, 78);
+            this.sendPosButton.Name = "sendPosButton";
+            this.sendPosButton.Size = new System.Drawing.Size(75, 23);
+            this.sendPosButton.TabIndex = 21;
+            this.sendPosButton.Text = "Send";
+            this.sendPosButton.UseVisualStyleBackColor = true;
+            this.sendPosButton.Click += new System.EventHandler(this.sendPosButton_Click);
+            // 
             // RemoteCmdForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(436, 651);
+            this.Controls.Add(this.richTextBox1);
+            this.Controls.Add(this.remoteSSHTabControl);
             this.Controls.Add(this.label11);
-            this.Controls.Add(this.tcpGrpBox);
-            this.Controls.Add(this.tcpSendButton);
-            this.Controls.Add(this.recordStateLabel);
-            this.Controls.Add(this.switchLabel);
-            this.Controls.Add(this.label10);
-            this.Controls.Add(this.QuickLabel);
-            this.Controls.Add(this.focusBox);
-            this.Controls.Add(this.label9);
-            this.Controls.Add(this.zoomBox);
-            this.Controls.Add(this.label7);
-            this.Controls.Add(this.motorOnButton);
-            this.Controls.Add(this.followYawOffButton);
-            this.Controls.Add(this.followYawOnButton);
-            this.Controls.Add(this.motorOffButton);
-            this.Controls.Add(this.lookdownButton);
-            this.Controls.Add(this.recenterButton);
-            this.Controls.Add(this.ackCountLabel);
-            this.Controls.Add(this.label8);
-            this.Controls.Add(this.sentCountLabel);
-            this.Controls.Add(this.label5);
-            this.Controls.Add(this.yawBox);
-            this.Controls.Add(this.pitchBox);
-            this.Controls.Add(this.yawBar);
-            this.Controls.Add(this.label6);
-            this.Controls.Add(this.pitchBar);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.reconnectJoystickButton);
-            this.Controls.Add(this.communicationControlGrp);
-            this.Controls.Add(this.mavControlGrp);
-            this.Controls.Add(this.videoControlGrp);
             this.Controls.Add(this.disconnectButton);
             this.Controls.Add(this.connectButton);
-            this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.passwordTextBox);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.usernameTextBox);
@@ -594,6 +846,17 @@
             ((System.ComponentModel.ISupportInitialize)(this.pitchBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.yawBar)).EndInit();
             this.tcpGrpBox.ResumeLayout(false);
+            this.remoteSSHTabControl.ResumeLayout(false);
+            this.commTab.ResumeLayout(false);
+            this.mavTab.ResumeLayout(false);
+            this.videoTab.ResumeLayout(false);
+            this.joystickTab.ResumeLayout(false);
+            this.joystickTab.PerformLayout();
+            this.gimbalTab.ResumeLayout(false);
+            this.gimbalTab.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.setYawNumericUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.setPitchNumericUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.setRollNumericUpDown)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -650,6 +913,27 @@
         private System.Windows.Forms.Button restartTcpButton;
         private System.Windows.Forms.GroupBox tcpGrpBox;
         private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.TabControl remoteSSHTabControl;
+        private System.Windows.Forms.TabPage commTab;
+        private System.Windows.Forms.TabPage mavTab;
+        private System.Windows.Forms.TabPage videoTab;
+        private System.Windows.Forms.TabPage joystickTab;
+        private System.Windows.Forms.TabPage gimbalTab;
+        private System.Windows.Forms.TextBox currentYawTextBox;
+        private System.Windows.Forms.TextBox currentPitchTextBox;
+        private System.Windows.Forms.TextBox currentRollTextBox;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.NumericUpDown setYawNumericUpDown;
+        private System.Windows.Forms.NumericUpDown setPitchNumericUpDown;
+        private System.Windows.Forms.NumericUpDown setRollNumericUpDown;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.RadioButton angleControlRadioButton;
+        private System.Windows.Forms.RadioButton RControlRadioButton;
+        private System.Windows.Forms.CheckBox refHomeCheckBox;
+        private System.Windows.Forms.Button sendPosButton;
     }
 }
 

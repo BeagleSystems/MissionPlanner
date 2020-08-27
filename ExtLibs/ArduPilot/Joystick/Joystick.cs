@@ -36,6 +36,9 @@ namespace MissionPlanner.Joystick
         int custom0 = 65535 / 2;
         int custom1 = 65535 / 2;
 
+        // custom axis value for two buttons combined axis
+        int custom_axis = 65535 / 2;
+
         //add tcp ip and port
         //IPAddress tcp_ip = new IPAddress(TcpEx.getAddressBytes("127.0.0.1"));
         //int tcp_port = 5000;
@@ -122,6 +125,10 @@ namespace MissionPlanner.Joystick
             look_down,
             center_yaw,
             return_all_center,
+
+            // two buttons combine to one axis
+            Button_axis_increase,
+            Button_axis_decrease,
         }
 
 
@@ -403,6 +410,7 @@ namespace MissionPlanner.Joystick
             values["Hatlr2"] = obj.GetPointOfView()[0];
             values["Custom1"] = 0;
             values["Custom2"] = 0;
+            values["CustomTwoButtonAxis"] = 0;
 
             CustomMessageBox.Show("Please move the joystick axis you want assigned to this function after clicking ok");
 
@@ -804,7 +812,9 @@ namespace MissionPlanner.Joystick
                 {
                     if (but.function != buttonfunction.Do_Set_Relay &&
                         but.function != buttonfunction.Button_axis0 &&
-                        but.function != buttonfunction.Button_axis1)
+                        but.function != buttonfunction.Button_axis1 &&
+                        but.function != buttonfunction.Button_axis_decrease &&
+                        but.function != buttonfunction.Button_axis_increase)
                     {
                         return;
                     }
@@ -1039,6 +1049,44 @@ namespace MissionPlanner.Joystick
                             }
                         }, null);
                         break;
+                    case buttonfunction.Button_axis_increase:
+                        _context.Send(delegate
+                        {
+                            try
+                            {
+                                int pwmmin = (int)but.p1;
+                                int pwmmax = (int)but.p2;
+
+                                if (buttondown)
+                                    custom_axis = pwmmax;
+                                else
+                                    custom_axis = pwmmin;
+                            }
+                            catch
+                            {
+                                CustomMessageBox.Show("Failed to Button_axis_increase");
+                            }
+                        }, null);
+                        break;
+                    case buttonfunction.Button_axis_decrease:
+                        _context.Send(delegate
+                        {
+                            try
+                            {
+                                int pwmmin = (int)but.p1;
+                                int pwmmax = (int)but.p2;
+
+                                if (buttondown)
+                                    custom_axis = pwmmax;
+                                else
+                                    custom_axis = pwmmin;
+                            }
+                            catch
+                            {
+                                CustomMessageBox.Show("Failed to Button_axis_decrease");
+                            }
+                        }, null);
+                        break;
                     case buttonfunction.look_down:
                         //send tcp message include quick command
                         SendQuickCommandToTcpServer(CameraControlMessage.QuickCmdEnum.LookDown);
@@ -1148,7 +1196,8 @@ namespace MissionPlanner.Joystick
             Hatud1,
             Hatlr2,
             Custom1,
-            Custom2
+            Custom2,
+            CustomTwoButton,
         }
 
         const int RESXu = 1024;
@@ -1476,6 +1525,11 @@ namespace MissionPlanner.Joystick
 
                 case joystickaxis.Custom2:
                     working = (int)(((float)(custom1 - min) / range) * ushort.MaxValue);
+                    working = (int)Constrain(working, 0, 65535);
+                    break;
+
+                case joystickaxis.CustomTwoButton:
+                    working = (int)(((float)(custom_axis - min) / range) * ushort.MaxValue);
                     working = (int)Constrain(working, 0, 65535);
                     break;
             }
