@@ -25,6 +25,7 @@ public class CameraControlMessage
         MotorOff    = 5,
         FollowYawDisable    = 6,
         FollowYawEnable     = 7,
+        GetAngles           = 8,
     }
 
     public enum SwitchOpEnum: byte

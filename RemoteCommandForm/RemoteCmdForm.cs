@@ -9,6 +9,7 @@ using System.Net.Sockets;
 using System.Net;
 using System.Runtime.Remoting.Channels;
 using Microsoft.Win32;
+using System.Runtime.CompilerServices;
 
 namespace RemoteCommandForm
 {
@@ -45,6 +46,9 @@ namespace RemoteCommandForm
             sendTcpTimer.Interval = 500;
             sendTcpTimer.AutoReset = true;
             sendTcpTimer.Elapsed += new System.Timers.ElapsedEventHandler(SendTcpRegular);
+
+            this.angleControlRadioButton_CheckedChanged(this, new EventArgs());
+            this.RControlRadioButton_CheckedChanged(this, new EventArgs());
 
         }
 
@@ -96,6 +100,21 @@ namespace RemoteCommandForm
             {
                 box.AppendText(content + Environment.NewLine);
                 box.ScrollToCaret();
+            }
+        }
+
+        delegate void setTextBox(TextBox box, string value);
+
+        private void SetTextBox(TextBox box, string value)
+        {
+            if(box.InvokeRequired)
+            {
+                setTextBox setThis = new setTextBox(SetTextBox);
+                box.Invoke(setThis, box, value);
+            }
+            else
+            {
+                box.Text = value;
             }
         }
 
@@ -665,7 +684,7 @@ namespace RemoteCommandForm
             TcpEx tcp = new TcpEx(tcp_ip, tcp_port);
             tcp.Connected += new TcpEx.TcpEventHandler(TCP_connected);
             tcp.Disconnected += new TcpEx.TcpEventHandler(TCP_disconnected);
-            tcp.DataArrived += new TcpEx.TcpTransmissionEventHandler(TcpDataProcess);
+            tcp.DataArrived += new TcpEx.TcpTransmissionEventHandler(TcpReadBackDataProcess);
             tcp.ExceptionOccurred += new TcpEx.TcpExceptionEventHandler(TcpExceptionProcess);
             tcp.Connect(tcp_ip, tcp_port);
             return tcp;
@@ -697,6 +716,45 @@ namespace RemoteCommandForm
                 ackCount++;
                 SetLabelText(ackCountLabel, ackCount.ToString());
             }
+        }
+
+        private void TcpReadBackDataProcess(Object sender, TcpTransmissionEventArgs e)
+        {
+            byte[] data = e.Data;
+            if (data.Length != 15)
+            {
+                return;
+            }
+            var roll_imu = BitConverter.ToInt16(data, 2);
+            var roll_abs = BitConverter.ToInt16(data, 4);
+            var pitch_imu = BitConverter.ToInt16(data, 6);
+            var pitch_abs = BitConverter.ToInt16(data, 8);
+            var yaw_imu = BitConverter.ToInt16(data, 10);
+            var yaw_abs = BitConverter.ToInt16(data, 12);
+
+            SetTextBox(currentRollTextBox, roll_abs.ToString());
+            SetTextBox(currentPitchTextBox, pitch_abs.ToString());
+            SetTextBox(currentYawTextBox, yaw_abs.ToString());
+
+            var msg = "Read IMU_angles: [" + roll_imu.ToString() + " " + pitch_imu.ToString() + " " + yaw_imu.ToString() + "]" + Environment.NewLine;
+            SetRichTextBox(richTextBox1, msg);
+            msg = "Read abs_angles_ref_home: [" + roll_abs.ToString() + " " + pitch_abs.ToString() + " " + yaw_abs.ToString() + "]" + Environment.NewLine;
+            SetRichTextBox(richTextBox1, msg);
+        }
+
+        private byte[] SliceBytes(byte[] source, int start, int end)
+        {
+            if (end < 0)
+            {
+                end = source.Length + end;
+            }
+            int len = end - start;
+            byte[] res = new byte[len];
+            for (int i = 0; i < len; i++)
+            {
+                res[i] = source[i + start];
+            }
+            return res;
         }
 
         public void SendContent(TcpEx tcp, byte[] content)
@@ -756,6 +814,8 @@ namespace RemoteCommandForm
                 setRollNumericUpDown.Maximum = setPitchNumericUpDown.Maximum = setYawNumericUpDown.Maximum = 500;
                 setRollNumericUpDown.Minimum = setPitchNumericUpDown.Minimum = setYawNumericUpDown.Minimum = -500;
                 setRollNumericUpDown.Value = setPitchNumericUpDown.Value = setYawNumericUpDown.Value = 0;
+
+                ReturnControlToPWM();
             }
             else
             {
@@ -767,6 +827,23 @@ namespace RemoteCommandForm
                 setYawNumericUpDown.Maximum = 120;
                 setYawNumericUpDown.Minimum = -120;
                 setRollNumericUpDown.Value = setPitchNumericUpDown.Value = setYawNumericUpDown.Value = 0;
+            }
+        }
+
+        private void ReturnControlToPWM()
+        {
+            var message = new AngleControlMessage();
+            try
+            {
+                var tcp = TcpConnect();
+
+                tcp.Send(message.getBytes());
+
+                tcp.Disconnect();
+            }
+            catch (Exception ex)
+            {
+                SetRichTextBox(richTextBox1, "Failed to send no control command to TCP server: " + ex.ToString());
             }
         }
 
@@ -808,6 +885,24 @@ namespace RemoteCommandForm
             catch(Exception ex)
             {
                 SetRichTextBox(richTextBox1, "Failed to send angle control command to TCP server: " + ex.ToString() );
+            }
+        }
+
+        private void refreshAngButton_Click(object sender, EventArgs e)
+        {
+            var message = new CameraControlMessage(CameraControlMessage.QuickCmdEnum.GetAngles);
+
+            try
+            {
+                var tcp = TcpConnect();
+
+                tcp.Send(message.getBytes());
+
+                //tcp.Disconnect();
+            }
+            catch (Exception ex)
+            {
+                SetRichTextBox(richTextBox1, "Failed to send get angles command to TCP server: " + ex.ToString());
             }
         }
     }

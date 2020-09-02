@@ -38,6 +38,15 @@ public class AngleControlMessage
         MODE_ANGLE_REL_FRAME = 5,
     }
 
+    public AngleControlMessage()
+    {
+        this.Roll = 0;
+        this.Pitch = 0;
+        this.Yaw = 0;
+        this.ControlMode = (byte)ControlModeEnum.MODE_NO_CONTROL;
+        this.QuickCommand = (byte)QuickCmdEnum.AngleControl;
+    }
+
     public AngleControlMessage(short p, short r, short y, AngleControlMessage.ControlModeEnum mode)
     {
         this.Roll = r;

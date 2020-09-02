@@ -84,6 +84,7 @@
             this.videoTab = new System.Windows.Forms.TabPage();
             this.joystickTab = new System.Windows.Forms.TabPage();
             this.gimbalTab = new System.Windows.Forms.TabPage();
+            this.sendPosButton = new System.Windows.Forms.Button();
             this.refHomeCheckBox = new System.Windows.Forms.CheckBox();
             this.angleControlRadioButton = new System.Windows.Forms.RadioButton();
             this.RControlRadioButton = new System.Windows.Forms.RadioButton();
@@ -98,7 +99,7 @@
             this.label14 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
-            this.sendPosButton = new System.Windows.Forms.Button();
+            this.refreshAngButton = new System.Windows.Forms.Button();
             this.videoControlGrp.SuspendLayout();
             this.mavControlGrp.SuspendLayout();
             this.communicationControlGrp.SuspendLayout();
@@ -653,6 +654,7 @@
             // 
             // gimbalTab
             // 
+            this.gimbalTab.Controls.Add(this.refreshAngButton);
             this.gimbalTab.Controls.Add(this.sendPosButton);
             this.gimbalTab.Controls.Add(this.refHomeCheckBox);
             this.gimbalTab.Controls.Add(this.angleControlRadioButton);
@@ -674,6 +676,16 @@
             this.gimbalTab.TabIndex = 4;
             this.gimbalTab.Text = "GimbalPosControl";
             this.gimbalTab.UseVisualStyleBackColor = true;
+            // 
+            // sendPosButton
+            // 
+            this.sendPosButton.Location = new System.Drawing.Point(210, 78);
+            this.sendPosButton.Name = "sendPosButton";
+            this.sendPosButton.Size = new System.Drawing.Size(75, 23);
+            this.sendPosButton.TabIndex = 21;
+            this.sendPosButton.Text = "Send";
+            this.sendPosButton.UseVisualStyleBackColor = true;
+            this.sendPosButton.Click += new System.EventHandler(this.sendPosButton_Click);
             // 
             // refHomeCheckBox
             // 
@@ -701,7 +713,7 @@
             // RControlRadioButton
             // 
             this.RControlRadioButton.AutoSize = true;
-            this.RControlRadioButton.Location = new System.Drawing.Point(12, 120);
+            this.RControlRadioButton.Location = new System.Drawing.Point(136, 143);
             this.RControlRadioButton.Name = "RControlRadioButton";
             this.RControlRadioButton.Size = new System.Drawing.Size(104, 17);
             this.RControlRadioButton.TabIndex = 14;
@@ -811,15 +823,15 @@
             this.label12.TabIndex = 0;
             this.label12.Text = "Roll";
             // 
-            // sendPosButton
+            // refreshAngButton
             // 
-            this.sendPosButton.Location = new System.Drawing.Point(210, 78);
-            this.sendPosButton.Name = "sendPosButton";
-            this.sendPosButton.Size = new System.Drawing.Size(75, 23);
-            this.sendPosButton.TabIndex = 21;
-            this.sendPosButton.Text = "Send";
-            this.sendPosButton.UseVisualStyleBackColor = true;
-            this.sendPosButton.Click += new System.EventHandler(this.sendPosButton_Click);
+            this.refreshAngButton.Location = new System.Drawing.Point(53, 106);
+            this.refreshAngButton.Name = "refreshAngButton";
+            this.refreshAngButton.Size = new System.Drawing.Size(63, 23);
+            this.refreshAngButton.TabIndex = 22;
+            this.refreshAngButton.Text = "Refresh";
+            this.refreshAngButton.UseVisualStyleBackColor = true;
+            this.refreshAngButton.Click += new System.EventHandler(this.refreshAngButton_Click);
             // 
             // RemoteCmdForm
             // 
@@ -934,6 +946,7 @@
         private System.Windows.Forms.RadioButton RControlRadioButton;
         private System.Windows.Forms.CheckBox refHomeCheckBox;
         private System.Windows.Forms.Button sendPosButton;
+        private System.Windows.Forms.Button refreshAngButton;
     }
 }
 
